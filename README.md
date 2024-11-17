@@ -23,6 +23,7 @@ Se você deseja uma instalação rápida e simples:
   ```
 
     * Exemplo:
+    
     ```bash
     PYTHON_SCRIPT=/usr/local/bin/md-tracker.py
     MONITORED_DIRS="/home/user/Documentos/Vault/pages /home/user/Documentos/Vault/journals"
