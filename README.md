@@ -21,6 +21,7 @@ Se você deseja uma instalação rápida e simples:
   ```bash
   sudo nano /etc/md-tracker/config
   ```
+
     * Exemplo:
     ```bash
     PYTHON_SCRIPT=/usr/local/bin/md-tracker.py
