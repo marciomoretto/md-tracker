@@ -1,0 +1,24 @@
+#!/bin/bash
+
+set -e
+
+# Nome do serviço
+SERVICE_NAME="md-watcher"
+
+# Parar o serviço se ele estiver ativo
+if systemctl is-active --quiet "${SERVICE_NAME}.service"; then
+    echo "Parando o serviço ${SERVICE_NAME}.service..."
+    systemctl stop "${SERVICE_NAME}.service"
+fi
+
+# Desabilitar o serviço no boot
+if systemctl is-enabled --quiet "${SERVICE_NAME}.service"; then
+    echo "Desabilitando o serviço ${SERVICE_NAME}.service..."
+    systemctl disable "${SERVICE_NAME}.service"
+fi
+
+# Recarregar as configurações do systemd
+echo "Recarregando configurações do systemd..."
+systemctl daemon-reload
+
+exit 0

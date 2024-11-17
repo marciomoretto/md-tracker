@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# Habilita o serviço systemd
+systemctl daemon-reload
+systemctl enable md-watcher.service
+systemctl start md-watcher.service

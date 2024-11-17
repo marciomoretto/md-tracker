@@ -1,0 +1,8 @@
+Package: md-watcher
+Version: 1.0
+Section: utils
+Priority: optional
+Architecture: all
+Depends: inotify-tools, python3
+Maintainer: Seu Nome <marcio.mr@gmail.com>
+Description: Monitora mudanças em arquivos Markdown (.md) e processa eventos usando Tracker3.

@@ -1,0 +1,17 @@
+[Unit]
+Description=Monitor Script Service
+After=network.target
+
+[Service]
+Environment=DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+Environment=TRACKER3_HOME=$HOME
+Environment=TRACKER_SPARQL_BACKEND=bus
+Environment=PATH=/home/marciomr/.local/bin:/home/marciomr/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/marciomr/Meus Programas/sh:/home/marciomr/Meus Programas/sh:.:/home/marciomr/MeusProgramas/python:/home/marciomr/MeusProgramas/sh:.
+User=marciomr
+Group=marciomr
+WorkingDirectory=/home/marciomr/MeusProgramas/sh
+ExecStart=/bin/bash /home/marciomr/MeusProgramas/sh/monitor_vault.sh /home/marciomr/MeusProgramas/python/tracker_logseq.py /home/marciomr/Documentos/Vault
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
