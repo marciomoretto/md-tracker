@@ -45,7 +45,7 @@ cd md-tracker
 2. Use o Makefile para configurar os arquivos e instalar as dependências:
 ```bash
 make install
-`` 
+```
 3. Edite o arquivo de configuração:
 ```bash
 sudo nano /etc/md-tracker/config
