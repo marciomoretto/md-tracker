@@ -7,6 +7,7 @@ O MD Tracker é uma ferramenta para monitorar alterações em arquivos Markdown 
 * **Execução em Segundo Plano:** Funciona como um serviço systemd para monitoramento contínuo.
 ## Licença
 Este projeto é licenciado sob a GPL 3.0. Leia o arquivo LICENSE para mais detalhes.
+
 ---
 ## Instalação
 
@@ -58,6 +59,7 @@ sudo systemctl daemon-reload
 sudo systemctl enable md-tracker.service
 sudo systemctl start md-tracker.service
 ```
+
 ---
 ## Uso
 ### Verificar o Status do Serviço
@@ -83,6 +85,7 @@ sudo systemctl restart md-tracker.service
   * O script Python processa eventos para criar, atualizar ou remover relações RDF.
 3. Serviço Systemd:
   * Executa o programa em segundo plano, reiniciando automaticamente em caso de falhas.
+    
 ---
 ### Desinstalação
 1. Parar e Desabilitar o Serviço:
@@ -98,6 +101,7 @@ sudo apt remove md-tracker
 ```bash
 sudo rm -rf /etc/md-tracker /usr/local/bin/md-tracker*
 ```
+
 ---
 ### Contribuições
 Contribuições são bem-vindas! Siga as etapas abaixo para colaborar:
