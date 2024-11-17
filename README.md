@@ -22,11 +22,11 @@ Se você deseja uma instalação rápida e simples:
   sudo nano /etc/md-tracker/config
   ```
     * Exemplo:
-    
     ```bash
     PYTHON_SCRIPT=/usr/local/bin/md-tracker.py
     MONITORED_DIRS="/home/user/Documentos/Vault/pages /home/user/Documentos/Vault/journals"
     ```
+    
   4. Inicie o serviço:
   ```bash
   sudo systemctl daemon-reload
