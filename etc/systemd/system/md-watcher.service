@@ -1,0 +1,14 @@
+[Unit]
+Description=Monitor Script Service
+After=network.target
+
+[Service]
+User=%i
+Group=%i
+
+WorkingDirectory=$BASE_DIR
+
+ExecStart=/bin/bash $WATCHER_SCRIPT $PYTHON_SCRIPT $MONITORED_DIRS
+
+[Install]
+WantedBy=multi-user.target
