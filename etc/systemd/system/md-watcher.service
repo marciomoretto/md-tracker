@@ -8,7 +8,7 @@ EnvironmentFile=/etc/md-watcher/config
 
 WorkingDirectory=/opt/md-tracker
 
-ExecStart=/bin/bash ${WATCHER_SCRIPT} ${PYTHON_SCRIPT} "${MONITORED_DIRS}"
+ExecStart=/bin/bash -c "${WATCHER_SCRIPT} ${PYTHON_SCRIPT} ${MONITORED_DIRS}"
 
 [Install]
 WantedBy=multi-user.target

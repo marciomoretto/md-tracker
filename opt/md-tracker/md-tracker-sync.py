@@ -28,13 +28,13 @@ OPÇÕES:
 
 EXEMPLOS:
   1. Sincronizar e limpar links obsoletos:
-     sync_tracker_logseq.py ~/Documentos/Vault/pages
+     md-tracker-sync.py ~/Documentos/Vault/pages
 
   2. Remover todas os links:
-     sync_tracker_logseq.py ~/Documentos/Vault/pages --remove-all
+     md-tracker-sync.py ~/Documentos/Vault/pages --remove-all
 
   3. Reindexar: remover todas os links e reprocessar o diretório:
-     sync_tracker_logseq.py ~/Documentos/Vault/pages --reindex
+     md-tracker-sync.py ~/Documentos/Vault/pages --reindex
 """
     print(help_text)
 
@@ -76,7 +76,7 @@ def get_links_and_files():
 
 def process_directory(directory):
     """
-    Varre um diretório e executa o tracker_logseq.py para cada arquivo .md encontrado.
+    Varre um diretório e executa o md-tracker.py para cada arquivo .md encontrado.
 
     :param directory: Caminho do diretório a ser processado.
     """
@@ -90,7 +90,7 @@ def process_directory(directory):
             print(f"Processando arquivo: {file}")
             try:
                 subprocess.run(
-                    ["tracker_logseq.py", str(file), "CREATE"],
+                    ["md-tracker.py", str(file), "CREATE"],
                     check=True
                 )
             except subprocess.CalledProcessError as e:
@@ -115,7 +115,7 @@ def cleanup_links(directory):
             print(f"Removendo link associado ao arquivo inexistente: {file_path} ↔ {link_path}")
             try:
                 subprocess.run(
-                    ["tracker_logseq.py", str(file_path), "DELETE"],
+                    ["md-tracker.py", str(file_path), "DELETE"],
                     check=True
                 )
             except subprocess.CalledProcessError as e:
@@ -134,7 +134,7 @@ def remove_all_links(directory):
             try:
                 print(file_path)
                 subprocess.run(
-                    ["tracker_logseq.py", str(file_path), "DELETE"],
+                    ["md-tracker.py", str(file_path), "DELETE"],
                     check=True
                 )
             except subprocess.CalledProcessError as e:

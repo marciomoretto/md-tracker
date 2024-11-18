@@ -1,8 +1,6 @@
-BASE_DIR=/opt/md-tracker
-
 # Caminho para o script Python
-PYTHON_SCRIPT=$BASE_DIR/md-tracker.py
-WATCHER_SCRIPT=$BASE_DIR/watcher_script.sh
+PYTHON_SCRIPT=/opt/md-tracker/md-tracker.py
+WATCHER_SCRIPT=/opt/md-tracker/md-watcher.sh
 
 # Lista de diretórios monitorados
 MONITORED_DIRS="/home/usuário/Documentos/Vault/pages /home/usuário/Documentos/Vault/journals"

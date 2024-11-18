@@ -19,7 +19,7 @@ def show_help():
     print("  CAMINHO_DO_ARQUIVO   Caminho para o arquivo .md da página do LogSeq.")
     print("  EVENTO               Tipo de evento (CREATE, MODIFY, DELETE).")
     print("\nExemplos de uso:")
-    print("  tracker_logseq.py ~/Documentos/LogSeqVault/minha_pagina.md MODIFY")
+    print("  md-tracker.py ~/Documentos/LogSeqVault/minha_pagina.md MODIFY")
     sys.exit()
 
 def urlencode(text):
