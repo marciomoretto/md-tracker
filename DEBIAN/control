@@ -3,6 +3,6 @@ Version: 1.0
 Section: utils
 Priority: optional
 Architecture: all
-Depends: inotify-tools, tracker3
+Depends: inotify-tools, tracker
 Maintainer: Márcio Moretto Ribeiro <marcio.mr@gmail.com>
 Description: Monitora mudanças em arquivos Markdown (.md) e processa eventos usando Tracker3.
