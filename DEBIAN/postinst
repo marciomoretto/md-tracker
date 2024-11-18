@@ -1,6 +1,60 @@
 #!/bin/bash
+set -e
 
-# Habilita o serviço systemd
+#export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(id -u "$USER")/bus"
+
+# Recarregar o daemon do systemd
 systemctl daemon-reload
-systemctl enable md-watcher.service
-systemctl start md-watcher.service
+
+# Determinar o usuário principal do sistema (UID > 1000, excluindo nobody)
+USER=$(getent passwd | awk -F: '$3 >= 1000 && $3 != 65534 {print $1; exit}')
+USER_HOME=$(eval echo "~$USER")
+
+# Verificar se o diretório do usuário principal é válido
+if [ -d "$USER_HOME" ]; then
+    # Diretório de configuração do systemd do usuário
+    USER_SYSTEMD_DIR="$USER_HOME/.config/systemd/user"
+    SERVICE_FILE="/etc/systemd/system/md-watcher.service"
+
+    # Criar o diretório de configuração do usuário, se necessário
+    if [ ! -d "$USER_SYSTEMD_DIR" ]; then
+        mkdir -p "$USER_SYSTEMD_DIR"
+        chown -R "$USER:$USER" "$USER_SYSTEMD_DIR"
+    fi
+
+    # Mover o arquivo de serviço existente para o contexto do usuário
+    if [ -f "$SERVICE_FILE" ]; then
+        mv "$SERVICE_FILE" "$USER_SYSTEMD_DIR/md-watcher.service"
+        chown "$USER:$USER" "$USER_SYSTEMD_DIR/md-watcher.service"
+        echo "Arquivo de serviço movido para $USER_SYSTEMD_DIR/md-watcher.service"
+    else
+        echo "Arquivo de serviço não encontrado em $SERVICE_FILE. Verifique a instalação."
+        exit 1
+    fi
+
+    # Recarregar o daemon do systemd no contexto do usuário
+    su - "$USER" -c "systemctl --user daemon-reload"
+
+    # Agendar a ativação e o início do serviço
+    echo "systemctl --user enable md-watcher.service && systemctl --user start md-watcher.service" | su - "$USER" -c "at now + 1 minute"
+
+    # Mensagem explicativa
+    echo "========================================================="
+    echo "Instalação concluída com sucesso!"
+    echo
+    echo "O serviço foi configurado para iniciar automaticamente em um minuto."
+    echo "Para gerenciar o serviço, use os comandos abaixo:"
+    echo "  systemctl --user status md-watcher.service   # Verificar o status"
+    echo "  systemctl --user restart md-watcher.service  # Reiniciar"
+    echo "  systemctl --user stop md-watcher.service     # Parar"
+    echo "========================================================="
+else
+    echo "========================================================="
+    echo "Erro: Não foi possível determinar o diretório do usuário principal."
+    echo "Por favor, mova manualmente o arquivo $SERVICE_FILE para ~/.config/systemd/user/"
+    echo "Após mover, execute os comandos abaixo:"
+    echo "  systemctl --user daemon-reload"
+    echo "  systemctl --user enable md-watcher.service"
+    echo "  systemctl --user start md-watcher.service"
+    echo "========================================================="
+fi

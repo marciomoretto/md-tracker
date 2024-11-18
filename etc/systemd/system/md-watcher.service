@@ -1,14 +1,11 @@
 [Unit]
-Description=Monitor Script Service
-After=network.target
+Description=Watch Markdown Vault
+After=default.target
 
 [Service]
-# Carregar variáveis do arquivo de configuração
-EnvironmentFile=/etc/md-watcher/config
-
 WorkingDirectory=/opt/md-tracker
-
-ExecStart=/bin/bash -c "${WATCHER_SCRIPT} ${PYTHON_SCRIPT} ${MONITORED_DIRS}"
+ExecStart=/bin/bash /opt/md-tracker/md-watcher.sh
+Restart=always
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=default.target
