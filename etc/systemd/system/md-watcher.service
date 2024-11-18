@@ -3,12 +3,12 @@ Description=Monitor Script Service
 After=network.target
 
 [Service]
-User=%i
-Group=%i
+# Carregar variáveis do arquivo de configuração
+EnvironmentFile=/etc/md-watcher/config
 
-WorkingDirectory=$BASE_DIR
+WorkingDirectory=${BASE_DIR}
 
-ExecStart=/bin/bash $WATCHER_SCRIPT $PYTHON_SCRIPT $MONITORED_DIRS
+ExecStart=/bin/bash ${WATCHER_SCRIPT} ${PYTHON_SCRIPT} "${MONITORED_DIRS}"
 
 [Install]
 WantedBy=multi-user.target
