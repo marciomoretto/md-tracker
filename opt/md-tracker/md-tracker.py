@@ -10,7 +10,7 @@ from pathlib import Path
 import argparse
 
 # Caminho para a pasta de assets
-ASSETS_PATH = os.path.expanduser("~/Documentos/Vault/assets")
+#ASSETS_PATH = os.path.expanduser("~/Documentos/Vault/assets")
 
 def show_help():
     print("Uso: python script.py CAMINHO_DO_ARQUIVO EVENTO")
@@ -24,6 +24,24 @@ def show_help():
 
 def urlencode(text):
     return urllib.parse.quote(text, safe='')
+
+def load_config(config_path):
+    """
+    Carrega as variáveis de um arquivo de configuração no formato `key=value`.
+    Retorna um dicionário com as variáveis.
+    """
+    config = {}
+    with open(config_path, "r") as f:
+        for line in f:
+            # Ignorar linhas em branco ou comentários
+            line = line.strip()
+            if not line or line.startswith("#"):
+                continue
+            # Dividir na chave e valor
+            key, value = line.split("=", 1)
+            config[key.strip()] = value.strip().strip('"')
+    return config
+
 
 def ensure_information_element(file_path):
     """
@@ -134,6 +152,7 @@ def search_by_links(page_file):
     links = re.findall(r'file://[^\s]+', result.stdout)
     return [Path(urllib.parse.unquote(link.replace("file://", ""))) for link in links]
 
+
 def sync_links(page_file, event):
     page_name = Path(page_file).stem
 
@@ -154,7 +173,8 @@ def sync_links(page_file, event):
             match_asset = re.search(r'\.\./assets/(.*?)\)(?=\s|$)', line)
             if match_asset:
                 asset_file = match_asset.group(1)
-                asset_path = Path(ASSETS_PATH) / asset_file
+                asset_path = Path(page_file).parent.parent / "assets" / Path(asset_file).name
+#                asset_path = Path(ASSETS_PATH) / asset_file
                 assets_mencionados[asset_path] = 1
 
             # Captura referências a outros arquivos Markdown no formato [[nome_da_pagina]]
