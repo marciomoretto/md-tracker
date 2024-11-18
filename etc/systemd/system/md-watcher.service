@@ -6,7 +6,7 @@ After=network.target
 # Carregar variáveis do arquivo de configuração
 EnvironmentFile=/etc/md-watcher/config
 
-WorkingDirectory=${BASE_DIR}
+WorkingDirectory=/opt/md-tracker
 
 ExecStart=/bin/bash ${WATCHER_SCRIPT} ${PYTHON_SCRIPT} "${MONITORED_DIRS}"
 
