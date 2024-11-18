@@ -1,52 +1,78 @@
-# ================== Instruções ==================
-# Este Makefile automatiza a criação, instalação e remoção do pacote md-tracker.
+# ======================= INSTRUÇÕES ==========================
+# Este Makefile instala, configura e gerencia o Simple Search Provider
+# sem exigir alterações na estrutura de diretórios existente.
 #
-# Comandos disponíveis:
+# COMANDOS DISPONÍVEIS:
+# 1. Instalar o script e serviços:
+#    make all
 #
-# 1. Construir o pacote .deb:
-#    make build
-#
-# 2. Instalar o pacote:
+# 2. Apenas instalar o script Python:
 #    make install
 #
-# 3. Desinstalar o pacote:
+# 3. Configurar o D-Bus:
+#    make config
+#
+# 4. Configurar e iniciar o serviço Systemd:
+#    make service
+#
+# 5. Desinstalar tudo:
 #    make uninstall
 #
-# 4. Limpar arquivos temporários:
+# 6. Limpar arquivos temporários (se aplicável):
 #    make clean
+# ============================================================
 
-# Variáveis de configuração
-PACKAGE_NAME = md-tracker
-BUILD_DIR = $(PACKAGE_NAME)
-DEB_PACKAGE = $(PACKAGE_NAME).deb
-
-# Caminhos no pacote
-BIN_DIR = $(BUILD_DIR)/usr/local/bin
-CONFIG_DIR = $(BUILD_DIR)/etc/md-tracker
-SERVICE_DIR = $(BUILD_DIR)/lib/systemd/system
+# Variáveis de Configuração
+INSTALL_DIR = /usr/local/bin
+DBUS_DIR = /etc/dbus-1/services
+SYSTEMD_USER_DIR = /lib/systemd/user
+SERVICE_NAME = simple-search-provider
+DBUS_SERVICE = org.example.SimpleSearch.service
 
 # Alvos principais
-.PHONY: all build install clean uninstall
+.PHONY: all install config service clean uninstall
 
 # Alvo principal
-all: build
+all: install config service
 
-# Constrói o pacote .deb
-build:
-	@echo "Criando estrutura do pacote..."
-	# Cria diretórios necessários
-	mkdir -p $(BIN_DIR)
-	mkdir -p $(CONFIG_DIR)
-	mkdir -p $(SERVICE_DIR)
-	mkdir -p $(BUILD_DIR)/DEBIAN
+# Instalar o script Python
+install:
+	@echo "Instalando o script Python..."
+	install -m 0755 simple_search_provider.py $(INSTALL_DIR)/$(SERVICE_NAME).py
+	@echo "Script Python instalado com sucesso em $(INSTALL_DIR)/$(SERVICE_NAME).py"
 
-	# Copia os arquivos do projeto
-	install -m 0755 md-watcher.sh $(BIN_DIR)/
-	install -m 0755 md-tracker.py $(BIN_DIR)/
-	install -m 0644 etc/md-tracker/config.example $(CONFIG_DIR)/config
-	install -m 0644 lib/systemd/system/md-tracker.service $(SERVICE_DIR)/
+# Configurar D-Bus
+config:
+	@echo "Configurando o serviço D-Bus..."
+	install -m 0644 org.example.SimpleSearch.service $(DBUS_DIR)/$(DBUS_SERVICE)
+	@echo "Serviço D-Bus configurado em $(DBUS_DIR)/$(DBUS_SERVICE)"
 
-	# Copia arquivos de controle do DEBIAN
-	install -m 0644 DEBIAN/control $(BUILD_DIR)/DEBIAN/
-	install -m 0755 DEBIAN/postinst $(BUILD_DIR)/DEBIAN/
-	install -m 
+# Configurar e iniciar o serviço Systemd
+service:
+	@echo "Instalando e configurando o serviço Systemd..."
+	install -m 0644 simple-search-provider.service $(SYSTEMD_USER_DIR)/$(SERVICE_NAME).service
+	@echo "Recarregando configurações do systemd..."
+	systemctl --user daemon-reload
+	@echo "Habilitando e iniciando o serviço..."
+	systemctl --user enable $(SERVICE_NAME).service
+	systemctl --user start $(SERVICE_NAME).service
+	@echo "Serviço Systemd configurado com sucesso!"
+
+# Remover os arquivos instalados
+uninstall:
+	@echo "Parando e desabilitando o serviço Systemd..."
+	systemctl --user stop $(SERVICE_NAME).service || true
+	systemctl --user disable $(SERVICE_NAME).service || true
+	@echo "Removendo arquivos instalados..."
+	rm -f $(INSTALL_DIR)/$(SERVICE_NAME).py
+	rm -f $(DBUS_DIR)/$(DBUS_SERVICE)
+	rm -f $(SYSTEMD_USER_DIR)/$(SERVICE_NAME).service
+	@echo "Recarregando configurações do systemd..."
+	systemctl --user daemon-reload
+	@echo "Desinstalação concluída!"
+
+# Limpar arquivos temporários
+clean:
+	@echo "Limpando arquivos temporários..."
+	@echo "Não há arquivos temporários para limpar neste projeto."
+	@echo "Limpeza concluída!"
