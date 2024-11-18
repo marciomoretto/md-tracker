@@ -43,6 +43,6 @@ while read -r path event file; do
         full_path="$path$file"
         
         # Executa o script Python com o evento e o arquivo
-        python3 "$PYTHON_SCRIPT" "$full_path" "$action"
+        $PYTHON "$PYTHON_SCRIPT" "$full_path" "$action"
     fi
 done
