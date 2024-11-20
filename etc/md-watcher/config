@@ -1,5 +1,2 @@
-# Caminho para o script Python
-PYTHON_SCRIPT=/usr/local/bin/md-tracker.py
-
-# Lista de diretórios monitorados
-MONITORED_DIRS="/home/usuário/Documentos/Vault/pages /home/usuário/Documentos/Vault/journals"
+PAGES_DIR="~/Documentos/Vault/pages"
+JOURNALS_DIR="~/Documentos/Vault/journals"
