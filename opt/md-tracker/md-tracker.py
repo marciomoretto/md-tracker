@@ -9,9 +9,6 @@ import unicodedata
 from pathlib import Path
 import argparse
 
-# Caminho para a pasta de assets
-#ASSETS_PATH = os.path.expanduser("~/Documentos/Vault/assets")
-
 def show_help():
     print("Uso: python script.py CAMINHO_DO_ARQUIVO EVENTO")
     print("\nSincroniza tags para assets mencionados em arquivos .md no LogSeq.")

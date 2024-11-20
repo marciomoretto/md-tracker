@@ -13,17 +13,32 @@ if [ ! -f "$CONFIG_FILE" ]; then
     echo "Erro: Arquivo de configuração não encontrado em $CONFIG_FILE"
     echo "Por favor, crie o arquivo com o seguinte conteúdo:"
     cat <<EOF
-# Caminho para o script Python
-PYTHON_SCRIPT=/opt/md-tracker/md-tracker.py
-
-# Lista de diretórios monitorados
-MONITORED_DIRS="\$HOME/Documentos/Vault/pages \$HOME/Documentos/Vault/journals"
+    # Exemplo de diretórios monitorados
+PAGES_DIR="/home/usuario/Documentos/Vault/pages"
+JOURNALS_DIR="/home/usuario/Documentos/Vault/journals"
 EOF
     exit 1
 fi
 
 # Carrega o arquivo de configuração
 source "$CONFIG_FILE"
+
+# Inicializa a lista de diretórios monitorados
+MONITORED_DIRS=""
+
+# Adiciona todas as variáveis do arquivo de configuração que sejam diretórios válidos à lista MONITORED_DIRS
+for var in $(compgen -v); do
+    if [ -d "${!var}" ]; then
+        MONITORED_DIRS="$MONITORED_DIRS ${!var}"
+    fi
+done
+
+# Verifica se há diretórios válidos na lista
+if [ -z "$MONITORED_DIRS" ]; then
+    echo "Erro: Nenhum diretório válido encontrado nas variáveis definidas no arquivo de configuração."
+    exit 1
+fi
+
 
 # Verifica se o inotifywait está instalado
 if ! command -v inotifywait &> /dev/null; then
